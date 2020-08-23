@@ -105,6 +105,32 @@ if __name__ == "__main__":
     # If running as script, print scraped data
     print(scrape_all())
 
+def hemispheres(browser):
+    hemisphere_image_urls = []
+
+    # First, get a list of all of the hemispheres
+    links = browser.find_by_css("a.product-item h3")
+
+    # Next, loop through those links, click the link, find the sample anchor, return the href
+    for i in range(len(links)):
+        hemisphere = {}
+    
+        # We have to find the elements on each loop to avoid a stale element exception
+        browser.find_by_css("a.product-item h3")[i].click()
+    
+        # Next, we find the Sample image anchor tag and extract the href
+        sample_elem = browser.find_link_by_text('Sample').first
+        hemisphere['img_url'] = sample_elem['href']
+    
+        # Get Hemisphere title
+        hemisphere['title'] = browser.find_by_css("h2.title").text
+    
+        # Append hemisphere object to list
+        hemisphere_image_urls.append(hemisphere)
+    
+        # Finally, we navigate backwards
+        browser.back()
+
 
 
 
